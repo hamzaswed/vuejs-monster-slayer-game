@@ -49,9 +49,6 @@
         <h2>Battle Log</h2>
         <ul>
           <li v-for="message in messagesLog">
-            <!-- {{message.actionCreator}} - {{message.acitonDescription}} -
-            {{message.actionValue}} -->
-
             <span v-if="message.acitonDescription === 'heal'" class="log--heal">
               💉 You Heal Your Self - Heal Value: {{ message.actionValue }}
             </span>

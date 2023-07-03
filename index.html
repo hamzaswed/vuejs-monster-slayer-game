@@ -17,13 +17,13 @@
       <h1>Monster Slayer</h1>
     </header>
     <div id="game">
-      <section v-if="!gameWinner" id="monster" class="container">
+      <section id="monster" class="container">
         <h2>Monster Health</h2>
         <div class="healthbar">
           <div :style="monsterBarStyles" class="healthbar__value"></div>
         </div>
       </section>
-      <section v-if="!gameWinner" id="player" class="container">
+      <section id="player" class="container">
         <h2>Your Health</h2>
         <div class="healthbar">
           <div :style="playerBarStyles" class="healthbar__value"></div>
@@ -31,9 +31,10 @@
       </section>
       <section v-if="gameWinner" class="container">
         <h2>Game Over!</h2>
-        <h3>The result is: {{gameWinner}}</h3>
+        <h3>The Result Is: {{gameWinner}}</h3>
+        <button @click="startNewGameHandler">Start New Game 🦸‍♀️ vs 👾</button>
       </section>
-      <section id="controls">
+      <section v-if="!gameWinner" id="controls">
         <button @click="attackMonster">ATTACK</button>
         <button
           :disabled="isSpecialAttackAvailable"
@@ -42,11 +43,51 @@
           SPECIAL ATTACK
         </button>
         <button :disabled="isPlayerHeald" @click="healPlayer">HEAL</button>
-        <button>SURRENDER</button>
+        <button @click="surrender">SURRENDER</button>
       </section>
       <section id="log" class="container">
         <h2>Battle Log</h2>
-        <ul></ul>
+        <ul>
+          <li v-for="message in messagesLog">
+            <!-- {{message.actionCreator}} - {{message.acitonDescription}} -
+            {{message.actionValue}} -->
+
+            <span v-if="message.acitonDescription === 'heal'" class="log--heal">
+              💉 You Heal Your Self - Heal Value: {{ message.actionValue }}
+            </span>
+
+            <span
+              v-if="message.acitonDescription === 'surrender'"
+              class="log--surrender"
+            >
+              🚑 You Are Surrender - Your Health Value: {{ playerHealth }}
+            </span>
+
+            <span
+              v-if="message.acitonDescription === 'special-attack' && message.actionCreator === 'player'"
+              class="log--player"
+            >
+              💪🦸‍♀️ You Attack (special) The Monster - Attack Value: {{
+              message.actionValue }}
+            </span>
+
+            <span
+              v-if="message.acitonDescription === 'attack' && message.actionCreator === 'player'"
+              class="log--player"
+            >
+              🦸‍♀️ You Attack The Monster - Attack Value: {{ message.actionValue
+              }}
+            </span>
+
+            <span
+              v-if="message.acitonDescription === 'attack' && message.actionCreator === 'monster'"
+              class="log--monster"
+            >
+              👾 The Monster Attack You - Attack Value: {{ message.actionValue
+              }}
+            </span>
+          </li>
+        </ul>
       </section>
     </div>
   </body>
